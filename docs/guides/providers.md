@@ -24,6 +24,17 @@ JEQ_PROVIDER=vercel jeq models
 
 `VERCEL_OIDC_TOKEN` is accepted when `AI_GATEWAY_API_KEY` is absent. The profile uses the TypeSafe gateway path and its default model. Check the endpoint and model with `jeq models` before a composed command.
 
+## OpenJEV
+
+[OpenJEV](https://openjev.sh) is a free community gateway to the same Jev model built by TypeSafe. Select it explicitly:
+
+```sh
+export OPENJEV_API_KEY='...'
+JEQ_PROVIDER=openjev jeq models
+```
+
+The profile uses `https://api.openjev.sh` as the base URL, the `openjev` model identifier, and the `OPENJEV_API_KEY` environment variable for authentication. TypeSafe remains the default provider; anyone with a `TYPESAFE_API_KEY` sees no behaviour change.
+
 ## One-off custom provider
 
 Use environment settings for one command without writing a credential to disk:

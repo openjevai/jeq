@@ -70,6 +70,8 @@ func builtinProvider(name string) (providerConfig, bool) {
 	case "vercel":
 		key := "AI_GATEWAY_API_KEY"
 		return providerConfig{BaseURL: "https://ai-gateway.vercel.sh/typesafe", DefaultModel: "typesafe-ai/jev", Auth: "bearer", APIKeyEnv: key}, true
+	case "openjev":
+		return providerConfig{BaseURL: "https://api.openjev.sh", DefaultModel: "openjev", Auth: "bearer", APIKeyEnv: "OPENJEV_API_KEY"}, true
 	}
 	return providerConfig{}, false
 }
@@ -229,7 +231,7 @@ func readProviderConfig(path string, getenv func(string) string, readFile func(s
 		}
 	}
 	for name, profile := range doc.Providers {
-		if strings.TrimSpace(name) == "" || name == "typesafe" || name == "vercel" || name == "custom" {
+		if strings.TrimSpace(name) == "" || name == "typesafe" || name == "vercel" || name == "openjev" || name == "custom" {
 			return configDocument{}, jeq.NewError(jeq.CodeInputInvalid, fmt.Sprintf("invalid or reserved provider name %q", name))
 		}
 		if strings.TrimSpace(profile.BaseURL) == "" || strings.TrimSpace(profile.DefaultModel) == "" {

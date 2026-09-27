@@ -14,6 +14,8 @@
 
 `jeq` lets scripts and agents ask Jev typed questions within the terminal, no boilerplate.
 
+> **OpenJEV support:** Jev is built by [TypeSafe](https://typesafe.ai). This fork keeps TypeSafe as the default and adds optional support for [OpenJEV](https://openjev.sh), a free community gateway to the same Jev model — set `OPENJEV_API_KEY` (or `JEQ_PROVIDER=openjev`) to use it. Original project: https://github.com/cristianoliveira/jeq by @cristianoliveira.
+
 ```bash
 # Bash; requires jeq and TYPESAFE_API_KEY. This sends synthetic input to TypeSafe.
 set -o pipefail

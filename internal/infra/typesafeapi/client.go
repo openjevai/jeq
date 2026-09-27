@@ -145,7 +145,7 @@ func (c *Client) call(ctx context.Context, method, path string, body []byte) ([]
 
 		// Only documented throttling statuses replay; exhaustion keeps the
 		// same stable classification with its recovery instruction.
-		if (status == http.StatusTooManyRequests || status == 529) && attempt < retries {
+		if (status == http.StatusTooManyRequests || status == http.StatusServiceUnavailable || status == 529) && attempt < retries {
 			wait, source := c.retryWait(header.Get("Retry-After"), attempt)
 			if c.Observer != nil {
 				c.Observer.Retrying(attempt+1, retries, status)
@@ -272,7 +272,7 @@ func classifyStatus(status int, body []byte, maxError int64, apiKey string) *jeq
 		e := jeq.NewError(jeq.CodeRequestRejected, "the server rejected request fields jeq cannot check locally")
 		e.Message = appendDetail(e.Message, detail)
 		return withRecovery(e, "fix the field the server names and resubmit; jeq validates only local rules")
-	case http.StatusTooManyRequests, 529:
+	case http.StatusTooManyRequests, http.StatusServiceUnavailable, 529:
 		e := jeq.NewError(jeq.CodeRateLimited, fmt.Sprintf("the server asked to slow down (status %d)", status))
 		e.Message = appendDetail(e.Message, detail)
 		return withRecovery(e, "retry after a delay; honor Retry-After when the server sends one")
